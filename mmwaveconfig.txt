@@ -1,0 +1,158 @@
+#
+# Modified by Dongwoo Kim (03/11/2025)
+# 
+# Simplified for 2-chip cascading system
+#
+
+
+#
+#Global configuration
+#Firmware download enable/disable; 1 - Enable; 0 - Disable
+#Calibration enable/disable; To perform calibration store/restore; 1 - Enable; 0 - Disable
+#Calibration Store/Restore; If CalibEnable = 1, then whether to store/restore; 1 - Store; 0 - Restore
+#Cascade device map; 1 - Master ; 2 - Slave1 ; 4 - Slave2 ; 8 - Slave3
+#
+EnableFwDownload=1;
+CalibEnable=0;
+CalibStoreRestore=1;
+CascadeDeviceMap=3;
+#END
+
+#
+#power on master arguments, please modify if needed.
+#rlClientCbs_t: crcType 0:16Bit/1:32Bit/2:64Bit, ackTimeout
+#
+crcType=1;
+ackTimeout=1000;
+#END
+
+#
+#channel config parameters, please modify if needed.
+#rlChanCfg_t
+#
+channelTx=7;    # TX 1/2/3 ON
+channelRx=15;   # RX 1/2/3/4 ON
+cascading=0;    # IGNORE. C code handles it
+#END
+
+#
+#ADC out config parameters, please modify if needed.
+#rlAdcOutCfg_t
+#
+adcBits=2;      # 16 bits
+adcFormat=1;    # Complex-1x
+#END
+
+#
+#DATA format config parameters, please modify if needed.
+#rlDevDataFmtCfg_t
+#
+rxChanEn=15;    # RX 1/2/3/4 ON
+adcBitsD=2;     # 16 bits
+adcFmt=1;       # Complex
+iqSwapSel=0;    # I First
+chInterleave=0; # Interleave mode
+#END
+
+#
+#Low power config Paramters, please modify if needed.
+#rlLowPowerModeCfg_t
+#
+anaCfg=0;
+lpAdcMode=0;    # Regular ADC
+#END
+
+#
+#Data Path config parameters, please modify if needed
+#rlDevDataPathCfg_t
+#
+intfSel=0;          ## CSI-2 interface
+transferFmtPkt0=1;  ## 1: ADC Only, 6: CP_ADC, 9 : ADC_CP (Didn't work), 54: CP_ADC_CQ
+transferFmtPkt1=0;  ## Suppress packet 1
+cqConfig=2;         ## 11: 16 bits
+cq0TransSize=132;
+cq1TransSize=132;
+cq2TransSize=72;
+#END
+
+#
+#LVDS clock config parameters, please modify if needed
+#rlDevDataPathClkCfg_t
+#
+laneClk=1;          ## DDR
+dataRate=1;         ## 600 MHz
+#END
+
+#
+#SET HSI clock parameters, please modify if needed.
+#rlDevHsiClk_t
+#
+hsiClk=9            ## 600 MHz DDR
+#END
+
+#
+#LANE config parameters, please modify if needed.
+#rlDevLaneEnable_t
+#
+laneEn=15;          ## 4 lanes
+#END
+
+#
+#LVDS Lane Config parameters, please modify if needed.
+#rlDevLvdsLaneCfg_t
+#
+laneFmtMap=0;       ## (Rx0,Rx1,...)
+laneParamCfg=1;     ## MSB First, PacketEnd Disabled, CRC Disabled
+#END
+
+#
+#CSI2 Lane Config parameters, please modify if needed.
+#rlDevCsi2Cfg_t
+#
+lanePosPolSel=218145;
+#END
+
+#
+#Programmable Filter config parameters, please modify if needed.
+#rlRfProgFiltConf_t
+#
+profileId=0;
+coeffStartIdx=0;
+progFiltLen=14;         ## The length (number of taps) of the filter corresponding to this profile
+progFiltFreqShift=100;  ## magnitude of the frequency shift
+#END
+
+#
+#Profile config parameters, please modify if needed.
+#rlProfileCfg_t
+#
+profileId=0;
+pfVcoSelect=2;
+startFreqConst=1439117143;  ## 53.644 * val = 77.2 GHz
+idleTimeConst=1000;         ## 1 LSB = 10 ns
+adcStartTimeConst=600;      ## 1 LSB = 10 ns
+rampEndTime=6000;           ## 1 LSB = 10 ns
+txOutPowerBackoffCode=0;    
+txPhaseShifter=0;
+freqSlopeConst=621;         ## 1LSB = 3.6e9*900/2^26
+txStartTime=0;              ## 1 LSB = 10 ns
+numAdcSamples=256;          ## Valid range: 64 to 1024
+digOutSampleRate=10000;     ## 1 LSB = 1 kSps
+hpfCornerFreq1=0;           
+hpfCornerFreq2=0;
+rxGain=48;                  ## 1LSB = 1dB
+#END
+
+#
+#Frame configuration parameters, please modify if needed.
+#rlFrameCfg_t
+#
+chirpStartIdxFCF=0;
+chirpEndIdxFCF=11;
+frameCount=100;             ## 1 - 
+loopCount=64;               ## 1 - 255
+periodicity=20000000;       ## 1LSB = 5ns     
+triggerDelay=0;             
+numAdcSamples=256;          ## Number of half words per chirp that need to be transferred out over high speed interface
+triggerSelect=1;            ## C code handles
+#END
